@@ -1,0 +1,8 @@
+langchain
+langchain_openai
+langchain-community
+pypdf
+PyPDF2
+chromadb
+langchainhub
+rich
