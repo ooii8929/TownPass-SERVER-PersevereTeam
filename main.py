@@ -47,7 +47,7 @@ print(f"total documents: {len(vectordb.get()['ids'])}")
 
 """## RAG Chain"""
 
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+model = ChatOpenAI(model="gpt-4o-mini", temperature=0)＄
 
 """### Retriever"""
 
