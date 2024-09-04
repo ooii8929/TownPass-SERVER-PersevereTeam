@@ -10,6 +10,10 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
+import json
+from langchain.document_loaders import JSONLoader
+import toml
+
 
 """## Setup"""
 
@@ -19,8 +23,15 @@ load_dotenv()
 """## Vectorstore """
 
 """### PDF Loader """
-file_path = "./data/pdf/16th-century-western-artists.pdf"
-loader = PyPDFLoader(file_path)
+# file_path = "./data/pdf/16th-century-western-artists.pdf"
+# loader = PyPDFLoader(file_path)
+# docs = loader.load()
+# print(f"docs: {len(docs)}")
+
+"""### JSON Loader """
+
+file_path = "./crawler/all_artwork_info.json"
+loader = JSONLoader(file_path=file_path, jq_schema='.', text_content=False)
 docs = loader.load()
 print(f"docs: {len(docs)}")
 
@@ -47,7 +58,7 @@ print(f"total documents: {len(vectordb.get()['ids'])}")
 
 """## RAG Chain"""
 
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0)＄
+model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 """### Retriever"""
 
@@ -55,11 +66,9 @@ retriever = vectordb.as_retriever()
 
 """### Prompt"""
 
-template = """Answer the question based only on the following context:
-{context}
-
-Question: {question}
-"""
+# 读取 template.toml 文件的内容
+template_data = toml.load('template.toml')
+template = template_data['template']['content']
 
 prompt = ChatPromptTemplate.from_template(template=template)
 
@@ -72,5 +81,5 @@ chain = ({"context": retriever | RunnableLambda(format_docs),
          | model
          | StrOutputParser())
 
-result = chain.invoke("16世紀西洋藝術家有誰")
+result = chain.invoke("有哪些畫是關於愛情的")
 pprint(result)
