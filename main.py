@@ -67,7 +67,7 @@ retriever = vectordb.as_retriever()
 """### Prompt"""
 
 # 读取 template.toml 文件的内容
-template_data = toml.load('template.toml')
+template_data = toml.load('./ai_handlers/settings/overall_prompt.toml')
 template = template_data['template']['content']
 
 prompt = ChatPromptTemplate.from_template(template=template)

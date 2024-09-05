@@ -7,3 +7,4 @@ chromadb
 langchainhub
 rich
 jq
+toml==0.10.2
