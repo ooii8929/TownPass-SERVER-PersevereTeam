@@ -12,7 +12,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 ```
-python main.py
+python rag_handler.py
 ```
 ## Repo infra
 - demo -> 幫助學習 RAG 各個 Components
