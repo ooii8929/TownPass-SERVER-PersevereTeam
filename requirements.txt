@@ -8,3 +8,5 @@ langchainhub
 rich
 jq
 toml==0.10.2
+langchain-openai
+langchain_chroma

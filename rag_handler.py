@@ -9,7 +9,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_chroma import Chroma
 import json
 from langchain.document_loaders import JSONLoader
 import toml
@@ -29,14 +29,20 @@ load_dotenv()
 # 初始化 Chroma 向量数据库
 persist_directory = "db"
 vectordb = Chroma(persist_directory=persist_directory)
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
+vector_store = Chroma(
+    collection_name="my_artwork_collection",
+    embedding_function=embeddings,
+    persist_directory=persist_directory,  # Where to save data locally, remove if not neccesary
+)
 """## RAG Chain"""
 
 model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 """### Retriever"""
 
-retriever = vectordb.as_retriever()
+retriever = vector_store.as_retriever()
 
 """### Prompt"""
 

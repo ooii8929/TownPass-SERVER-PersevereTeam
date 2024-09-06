@@ -40,11 +40,12 @@ pprint(text_chunks[1])
 
 # embebbing model
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+collection_name = "my_artwork_collection"  # Specify a collection name
 
 persist_directory = "db"
 vectordb = Chroma.from_documents(text_chunks,
                                  embedding=embeddings,
-                                 persist_directory=persist_directory)
+                                 persist_directory=persist_directory,collection_name=collection_name)
 
 print(f"total documents: {len(vectordb.get()['ids'])}")
 
