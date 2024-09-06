@@ -15,6 +15,12 @@ from langchain.document_loaders import JSONLoader
 import toml
 
 
+"""## Input"""
+# kid, teen, adult
+audience = "kid"
+question = "有哪些畫是關於愛情的"
+
+
 """## Setup"""
 
 # 載入 .env 檔案中的環境變數
@@ -34,8 +40,9 @@ retriever = vectordb.as_retriever()
 
 """### Prompt"""
 
-# 读取 template.toml 文件的内容
-template_data = toml.load('./ai_handlers/settings/overall_prompt.toml')
+# 根據 audience 拿到不同的 toml，读取 template.toml 文件的内容
+audience_toml = f"./ai_handlers/settings/audience/{audience}_prompt.toml"
+template_data = toml.load(audience_toml)
 template = template_data['template']['content']
 
 prompt = ChatPromptTemplate.from_template(template=template)
@@ -49,5 +56,5 @@ chain = ({"context": retriever | RunnableLambda(format_docs),
          | model
          | StrOutputParser())
 
-result = chain.invoke("有哪些畫是關於愛情的")
+result = chain.invoke(question)
 pprint(result)
