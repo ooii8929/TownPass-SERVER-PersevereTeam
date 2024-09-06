@@ -19,3 +19,4 @@ python rag_handler.py
 - lang-smith-setup -> 測試 LandSmith 安裝
 - data -> 存 crawler 的資料
 - ai_handlers -> 存 prompt
+- ai_handlers/settings/audience -> 根據不同受眾用的不同的 prompt
