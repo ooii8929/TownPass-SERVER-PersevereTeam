@@ -3,7 +3,8 @@ from ..db import db_connection
 import uuid
 import time
 import json
-from ..models.bot_model import Bot, Language, Style, SectionStage, QestionType
+from ..models.bot_model import Bot
+from ..models.defined_enum import Language, Style, SectionStage, QestionType
 
 def get_all_conversations(task_id):
   data = request.get_json()
@@ -116,12 +117,13 @@ def create_conversation(task_id):
     # get option
     cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, reply, answer, option, ts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (uid, task_id, user_uid, 'user', 'user', data['reply'], data['answer'], "option", ts)) 
     # call model to get next conversation
-    ai_res = my_bot.interact(SectionStage.PROGRESS, data['reply'])
+    ai_res = my_bot.interact(SectionStage.PROGRESS, f"這是提問: {last_conversation['question']}, 這是答案: {data['reply']}")
+    print("********", ai_res)
     # insert system conversation to db
     options = [] if ai_res['type'] == QestionType.OPEN else ai_res["options"]
     # insert system conversation to db 
     type = ai_res["type"].name.lower()
-    cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, content, question, options, ts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (system_uid, task_id, user_uid, type, 'system', 'content', 'question', json.dumps(options, separators=(',', ':')), ts))  
+    cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, content, question, options, ts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (system_uid, task_id, user_uid, type, 'system', ai_res['content'], ai_res["question"], json.dumps(options, separators=(',', ':')), ts))  
     res_data = {
       "task_id": task_id,
       "user_uid": data['user_uid'],

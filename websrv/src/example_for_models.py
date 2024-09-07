@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from models.bot_model import Bot, Language, Style, SectionStage
+from ..models.bot_model import Bot
+from ..models.defined_enum import Language, Style, SectionStage, QestionType
 
 
 

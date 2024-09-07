@@ -1,28 +1,7 @@
 from .rag_handler import rag_handler
+from .defined_enum import Language, Style, SectionStage, type_dict
 from enum import Enum, auto
 
-class Language(Enum):
-    TW = auto()
-    EN = auto()
-    JP = auto()
-# 待新增
-
-class Style(Enum):
-    HAPPY = auto()
-    DISGUST = auto()
-# 待新增
-
-class SectionStage(Enum):
-    BEGINNING = auto()
-    PROGRESS = auto()
-    END = auto()
-# 待新增
-
-class QestionType(Enum):
-    OPTION = auto()
-    OPEN = auto()
-    NEXT = auto()
-# 待新增
 
 class Bot:
     def __init__(self, language: Language, age: int, style: Style, user_location: str,all_locations: list[str],visited_locations:list[str]):
@@ -47,6 +26,9 @@ class Bot:
             visited_locations=self.visited_locations,
             userInput=inputText
         )
+        questionType = res_data["type"]
+        print("type:",questionType)
+        res_data["type"] = type_dict[questionType]
         # sectionStage: Beginning, inputText: ""
         # res_data = {
         #     "content": "嗨，小朋友們！我們今天要來認識一個非常有趣的地方喔！...",

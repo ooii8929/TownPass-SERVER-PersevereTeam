@@ -9,3 +9,15 @@ MarkupSafe==2.1.5
 packaging==24.1
 watchdog==5.0.2
 Werkzeug==3.0.4
+langchain
+langchain_openai
+langchain-community
+pypdf
+PyPDF2
+chromadb
+langchainhub
+rich
+jq
+toml==0.10.2
+langchain-openai
+langchain_chroma

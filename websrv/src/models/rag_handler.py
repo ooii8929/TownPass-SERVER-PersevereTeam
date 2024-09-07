@@ -7,9 +7,11 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
+from .defined_enum import Language, Style, SectionStage
 import toml
 
 def rag_handler(audience, language, location, character,stage, all_locations,visited_locations, userInput= ""):
+    print(audience, language, location, character,stage, all_locations,visited_locations, userInput)
     isEnd = False
     # Load environment variables
     load_dotenv()
@@ -33,10 +35,12 @@ def rag_handler(audience, language, location, character,stage, all_locations,vis
     # Set up retriever
     retriever = vector_store.as_retriever()
     audience_toml = ""
-    if stage == "beginning":
+    if stage == SectionStage.BEGINNING:
+        print("beginning")
         audience_toml = os.path.join(base_dir, "../../../ai_handlers/settings/introduction.toml")
     else:
-        if stage == "end":
+        if stage == SectionStage.END:
+            print("end")
             isEnd = True
         audience_toml = os.path.join(base_dir, "../../../ai_handlers/settings/feedback.toml")
 
@@ -54,6 +58,7 @@ def rag_handler(audience, language, location, character,stage, all_locations,vis
         userInput =""
         tmp = location
 
+    print(tmp)
 
     # Set up the chain
     chain = (
@@ -80,7 +85,7 @@ def rag_handler(audience, language, location, character,stage, all_locations,vis
         "userInput": userInput,
         "character": character,
         "isEnd": isEnd,
-        "tmp": "大稻埕",
+        "tmp": tmp,
         "all_locations": all_locations,
         "visited_locations": visited_locations
     })
