@@ -11,7 +11,7 @@ import json
 load_dotenv()
 
 # Load JSON data
-file_path = "../crawler/message.json"
+file_path = "../crawler/demo.json"
 data = json.loads(Path(file_path).read_text())
 pprint(data)
 
