@@ -14,7 +14,7 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
     load_dotenv()
 
     # Initialize Chroma vector database
-    persist_directory = "db"
+    persist_directory = "../../../db"
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     vector_store = Chroma(
         collection_name="my_artwork_collection",
@@ -70,13 +70,13 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
     return result
 
 # Example usage:
-# result = rag_handler(
-#     audience="kid",
-#     language="Korean",
-#     location="大稻埕",
-#     character="disgust",
-#     userInput="大家好！我是你們今天超級開心的導覽員！...",
-#     isEnd=False,
-#     wantMore=False
-# )
-# pprint(result)
+result = rag_handler(
+    audience="kid",
+    language="Korean",
+    location="大稻埕",
+    character="disgust",
+    userInput="大家好！我是你們今天超級開心的導覽員！...",
+    isEnd=False,
+    wantMore=False
+)
+pprint(result)
