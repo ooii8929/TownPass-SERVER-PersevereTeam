@@ -24,7 +24,7 @@ load_dotenv()
 
 """### JSON Loader """
 
-file_path = "./crawler/all_artwork_info.json"
+file_path = "./crawler/yong_le_market.json"
 loader = JSONLoader(file_path=file_path, jq_schema='.', text_content=False)
 docs = loader.load()
 print(f"docs: {len(docs)}")
@@ -40,7 +40,7 @@ pprint(text_chunks[1])
 
 # embebbing model
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-collection_name = "my_artwork_collection"  # Specify a collection name
+collection_name = "demo"  # Specify a collection name
 
 persist_directory = "db"
 vectordb = Chroma.from_documents(text_chunks,
