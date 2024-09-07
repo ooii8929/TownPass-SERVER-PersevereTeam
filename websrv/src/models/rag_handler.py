@@ -29,7 +29,7 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
     retriever = vector_store.as_retriever()
 
     # Load prompt template
-    audience_toml = f"./ai_handlers/settings/demo.toml"
+    audience_toml = f"../../../ai_handlers/settings/demo.toml"
     template_data = toml.load(audience_toml)
     template = template_data['template']['content']
     prompt = ChatPromptTemplate.from_template(template=template)
