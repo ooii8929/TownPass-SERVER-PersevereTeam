@@ -1,8 +1,9 @@
 from enum import Enum, auto
 
 class Language(Enum):
-    CHINESE = auto()
-    ENGLISH = auto()
+    TW = auto()
+    EN = auto()
+    JP = auto()
 # 待新增
 
 class Style(Enum):
@@ -39,11 +40,11 @@ class Bot:
             "content": "嗨，小朋友們！我們今天要來認識一個非常有趣的地方喔！...",
             "question": "好了，小朋友們，現在我們來玩個小遊戲吧！我有一個問題要問你們：大稻埕碼頭最有名的出口商品是什麼呢？",
             "type": QestionType.OPTION,
-             "options": [
-                {"label": "A", "option": "糖果"},
-                {"label": "B", "option": "茶葉"},
-                {"label": "C", "option": "冰淇淋"}
-             ],  
+            "options": [
+                {"label": "A", "option": "糖果", "answer": True},
+                {"label": "B", "option": "茶葉", "answer": False},
+                {"label": "C", "option": "冰淇淋", "answer": False}
+            ], 
             "want_more": True
         }
         # sectionStage: Progress, inputText: "好了，小朋友們，現在我們來玩個小遊戲吧！我有一個問題要問你們：大稻埕碼頭最有名的出口商品是什麼呢？A. 糖果B. 茶葉C. 玩具，我覺得是A"

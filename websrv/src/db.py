@@ -16,7 +16,8 @@ def create_tables():
                 uid TEXT NOT NULL PRIMARY KEY,
                 name TEXT NOT NULL,
                 age INTEGER DEFAULT 18,
-                style TEXT NULL
+                style TEXT NULL,
+                lang TEXT DEFAULT 'tw'
         );""",
         """CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY, 
@@ -24,6 +25,7 @@ def create_tables():
                 user_uid INTEGER NOT NULL,
                 interactions Integer NOT NULL DEFAULT 0,
                 status char(1) NOT NULL, 
+                score INTEGER DEFAULT 0,
                 begin_date TEXT NULL, 
                 end_date TEXT NULL, 
                 FOREIGN KEY (user_uid) REFERENCES users (uid)
@@ -39,6 +41,7 @@ def create_tables():
                 last_uid TEXT NULL,
                 reply TEXT NULL,
                 answer TEXT NULL,
+                option TEXT NULL,
                 ts TEXT NOT NULL,
                 FOREIGN KEY (user_uid) REFERENCES users (uid),
                 FOREIGN KEY (task_id) REFERENCES tasks (id)

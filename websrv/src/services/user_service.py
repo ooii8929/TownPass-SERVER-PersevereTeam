@@ -19,7 +19,8 @@ def create_user():
     conn = db_connection()
     cursor = conn.cursor() 
     cursor.execute("INSERT INTO users (uid, name, age, style) VALUES (?, ?, ?, ?)", (uid, data['name'], data['age'], data['style']))
-    conn.commit()  
+    conn.commit() 
+    conn.close() 
     return jsonify({"uid": uid, "name": data['name']})
 
 def show_user(username): 

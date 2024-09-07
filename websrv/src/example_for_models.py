@@ -1,7 +1,6 @@
 from models.bot_model import Bot, Language, Style, SectionStage
 
 def main():
-    # 创建一个 Bot 实例
     my_bot = Bot(
         language=Language.CHINESE,
         age=10,
