@@ -13,7 +13,7 @@ InteractionMap: ["引導提問":"根據 Context 加上 UserInput ","問單選選
 
 假設 {isEnd} 為 true，則讓 interaction 設定為："推薦下個景點"。
 
-如果 {isEnd} 為 false，請從 InteractionMap 裡面挑選適合的方式做延伸互動。如果是"問單選選擇題"，則將題目改成 options 的 list。請將選項 ABC 用 "label" 當 key， value 使用 "option"。選項如果是正確的話要多給 key answer，value 為 true
+如果 {isEnd} 為 false，請從 InteractionMap 裡面挑選適合的方式做延伸互動。現在的 InteractionMap 請選擇 "引導提問"。如果是"問單選選擇題"，則將題目改成 options 的 list。請將選項 ABC 用 "label" 當 key， value 使用 "option"。選項如果是正確的話要多給 key answer，value 為 true
 
 另外要判斷 UserInput 中用戶是否有繼續互動的意圖，設定一個變數 wantMore 為 false。
 
