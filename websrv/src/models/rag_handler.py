@@ -9,7 +9,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 import toml
 
-def rag_handler(audience, language, location, character, userInput, isEnd, wantMore=False):
+def rag_handler(audience, language, location, character, userInput, isEnd, stage):
     # Load environment variables
     load_dotenv()
 
@@ -28,8 +28,13 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
     # Set up retriever
     retriever = vector_store.as_retriever()
 
+    if stage == "beginning":
+        audience_toml = f"../../../ai_handlers/settings/introduction.toml"
+    else:
+        audience_toml = f"../../../ai_handlers/settings/feedback.toml"
+
     # Load prompt template
-    audience_toml = f"../../../ai_handlers/settings/demo.toml"
+    audience_toml = f"../../../ai_handlers/settings/feedback.toml"
     template_data = toml.load(audience_toml)
     template = template_data['template']['content']
     prompt = ChatPromptTemplate.from_template(template=template)
@@ -44,12 +49,11 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
             "context": lambda x: format_docs(retriever.get_relevant_documents(x["userInput"])),
             "audience": lambda x: x["audience"],
             "language": lambda x: x["language"],
-            "userInput": lambda x: x["userInput"],
+            "userInput": lambda x: x.get["userInput",""],
             "isEnd": lambda x: x["isEnd"],
             "output": lambda x: x.get("output", ""),
             "interaction": lambda x: x.get("interaction", ""),
             "location": lambda x: ", ".join(["大稻埕", "永樂布市", "霞海城隍廟", "迪化街中街", "大稻埕碼頭", "波麗路西餐廳"]),
-            "wantMore": lambda x: x.get("wantMore", False),
             "character": lambda x: x.get("character", False),
         }
         | prompt
@@ -63,7 +67,6 @@ def rag_handler(audience, language, location, character, userInput, isEnd, wantM
         "language": language,
         "userInput": userInput,
         "isEnd": isEnd,
-        "wantMore": wantMore,
         "character": character,
     })
 
@@ -75,8 +78,8 @@ result = rag_handler(
     language="Korean",
     location="大稻埕",
     character="disgust",
-    userInput="大家好！我是你們今天超級開心的導覽員！...",
+    userInput="",
     isEnd=False,
-    wantMore=False
+    stage="beginning"
 )
 pprint(result)
