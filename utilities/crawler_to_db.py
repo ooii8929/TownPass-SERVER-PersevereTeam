@@ -1,52 +1,55 @@
-# -*- coding: utf-8 -*-
 from rich.pretty import pprint
 from dotenv import load_dotenv
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import JSONLoader
+from langchain_text_splitters import RecursiveJsonSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
+from pathlib import Path
+import json
 
-from langchain.document_loaders import JSONLoader
-
-
-
-"""## Setup"""
-
-# 載入 .env 檔案中的環境變數
+# Load environment variables
 load_dotenv()
 
-"""## Vectorstore """
+# Load JSON data
+file_path = "../crawler/message.json"
+data = json.loads(Path(file_path).read_text())
+pprint(data)
 
-"""### PDF Loader """
-# file_path = "./data/pdf/16th-century-western-artists.pdf"
-# loader = PyPDFLoader(file_path)
-# docs = loader.load()
-# print(f"docs: {len(docs)}")
+# Use JSONLoader
+loader = JSONLoader(
+    file_path=file_path,
+    jq_schema='.',
+    text_content=False)
 
-"""### JSON Loader """
-
-file_path = "../crawler/artwork_info.json"
-loader = JSONLoader(file_path=file_path, jq_schema='.', text_content=False)
 docs = loader.load()
 print(f"docs: {len(docs)}")
 
-"""### Splitter """
+# Initialize the RecursiveJsonSplitter
+splitter = RecursiveJsonSplitter(max_chunk_size=200)
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-text_chunks = text_splitter.split_documents(docs)
+# Process each document
+all_chunks = []
+for doc in docs:
+    # Convert the document's page_content (which is a string) back to a JSON object
+    json_content = json.loads(doc.page_content)
+    # Split the JSON content
+    chunks = splitter.split_json(json_data=json_content)
+    all_chunks.extend(chunks)
 
-print (f"text chunks: {len(text_chunks)}")
+print(f"text chunks: {len(all_chunks)}")
+pprint(all_chunks[1])
 
-pprint(text_chunks[1])
-
-# embebbing model
+# Set up embedding model
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-collection_name = "my_artwork_collection"  # Specify a collection name
+collection_name = "my_artwork_collection"
 
-persist_directory = "db"
-vectordb = Chroma.from_documents(text_chunks,
-                                 embedding=embeddings,
-                                 persist_directory=persist_directory,collection_name=collection_name)
+# Create Chroma vectorstore
+persist_directory = "../db"
+vectordb = Chroma.from_texts(
+    texts=[json.dumps(chunk) for chunk in all_chunks],
+    embedding=embeddings,
+    persist_directory=persist_directory,
+    collection_name=collection_name
+)
 
 print(f"total documents: {len(vectordb.get()['ids'])}")
-
