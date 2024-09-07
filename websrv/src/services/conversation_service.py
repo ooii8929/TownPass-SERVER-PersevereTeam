@@ -13,12 +13,19 @@ def get_all_conversations(task_id):
   cursor.execute("SELECT * FROM conversations WHERE task_id=? AND user_uid=? ", (task_id, data['user_uid'],)) 
   rows = cursor.fetchall()
   column_names = [description[0] for description in cursor.description]
-  conversations = [dict(zip(column_names, row)) for row in rows]
+  
+  result = []
+  for row in rows:
+    row_dict = dict(zip(column_names, row))  # 將 row 轉換為字典並保持列名
+    options_str = row_dict.get('options')  # 確保 'options' 欄位存在
+    if options_str is not None:
+        row_dict['options'] = json.loads(options_str)  # 將 JSON 字符串轉換為 Python 對象
+    result.append(row_dict)
   res = {
   	"task_id": task_id,
   	"user_uid": data['user_uid'],
   	"score": '20',
-  	"conversations": conversations
+  	"conversations": result
   }
   return jsonify(res)
 
