@@ -25,7 +25,10 @@ docs = loader.load()
 print(f"docs: {len(docs)}")
 
 # Initialize the RecursiveJsonSplitter
-splitter = RecursiveJsonSplitter(max_chunk_size=200)
+splitter = RecursiveJsonSplitter(
+    max_chunk_size=100,  # 減小最大 chunk 大小
+    min_chunk_size=20,   # 設置最小 chunk 大小
+)
 
 # Process each document
 all_chunks = []
@@ -37,7 +40,7 @@ for doc in docs:
     all_chunks.extend(chunks)
 
 print(f"text chunks: {len(all_chunks)}")
-pprint(all_chunks[1])
+pprint(all_chunks[0])
 
 # Set up embedding model
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
