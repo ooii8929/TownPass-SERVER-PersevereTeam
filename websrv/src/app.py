@@ -15,9 +15,9 @@ CORS(app)
 def hello_geek():
     return '<h1>Hello, Flask in Docker</h2>'
     
-app.add_url_rule('/api/v1/user/<username>', 'show_user', show_user) 
-app.add_url_rule('/api/v1/user', 'get_all_users', get_all_users)
-app.add_url_rule('/api/v1/user', 'create_user', create_user, methods=['POST'])
+app.add_url_rule('/api/v1/users/<username>', 'show_user', show_user) 
+app.add_url_rule('/api/v1/users', 'get_all_users', get_all_users)
+app.add_url_rule('/api/v1/users', 'create_user', create_user, methods=['POST'])
 
 app.add_url_rule('/api/v1/tasks/<task_id>/conversation', 'create_conversation', create_conversation, methods=['POST'])
 app.add_url_rule('/api/v1/tasks/<task_id>/conversations', 'get_all_conversations', get_all_conversations, methods=['POST'])
