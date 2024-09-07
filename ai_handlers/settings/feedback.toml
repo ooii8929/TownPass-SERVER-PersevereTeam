@@ -20,5 +20,13 @@ InteractionMap: ["引導提問":"根據 Context 加上 UserInput 並給出問題
 
 另外要判斷 UserInput 中用戶是否有繼續互動的意圖，設定一個變數 wantMore 為 false。
 
-最後請給我有以下 key 格式的 json 就好 : content(這是字串), question,wantMore,interaction( key 改成用 type ), options(如果有的話)
+請依照以下json格式輸出，type 請寫死不要更改
+{{
+    "content": content,
+    "question": question,
+    "type": "引導提問",
+    "options": options, 
+    "want_more": wantMore
+}}
+
 """
