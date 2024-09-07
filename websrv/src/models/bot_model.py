@@ -1,3 +1,4 @@
+from .rag_handler import rag_handler
 from enum import Enum, auto
 
 class Language(Enum):
@@ -23,7 +24,6 @@ class QestionType(Enum):
     NEXT = auto()
 # 待新增
 
-
 class Bot:
     def __init__(self, language: Language, age: int, style: Style, user_location: str,all_locations: list[str],visited_locations:list[str]):
         self.language = language
@@ -35,18 +35,30 @@ class Bot:
 
 
     def interact(self, sectionStage: SectionStage,inputText: str):
+        # rag_handler(audience, language, location, character,stage, all_locations,visited_locations, userInput= "")
+        audience = "kid" #這邊之後要改成傳入age
+        res_data = rag_handler(
+            audience=audience,
+            language=self.language,
+            location=self.user_location,
+            character=self.style,
+            stage=sectionStage,
+            all_locations=self.all_locations,
+            visited_locations=self.visited_locations,
+            userInput=inputText
+        )
         # sectionStage: Beginning, inputText: ""
-        res_data = {
-            "content": "嗨，小朋友們！我們今天要來認識一個非常有趣的地方喔！...",
-            "question": "好了，小朋友們，現在我們來玩個小遊戲吧！我有一個問題要問你們：大稻埕碼頭最有名的出口商品是什麼呢？",
-            "type": QestionType.OPTION,
-            "options": [
-                {"label": "A", "option": "糖果", "answer": True},
-                {"label": "B", "option": "茶葉", "answer": False},
-                {"label": "C", "option": "冰淇淋", "answer": False}
-            ], 
-            "want_more": True
-        }
+        # res_data = {
+        #     "content": "嗨，小朋友們！我們今天要來認識一個非常有趣的地方喔！...",
+        #     "question": "好了，小朋友們，現在我們來玩個小遊戲吧！我有一個問題要問你們：大稻埕碼頭最有名的出口商品是什麼呢？",
+        #     "type": QestionType.OPTION,
+        #     "options": [
+        #         {"label": "A", "option": "糖果", "answer": True},
+        #         {"label": "B", "option": "茶葉", "answer": False},
+        #         {"label": "C", "option": "冰淇淋", "answer": False}
+        #     ], 
+        #     "want_more": True
+        # }
         # sectionStage: Progress, inputText: "好了，小朋友們，現在我們來玩個小遊戲吧！我有一個問題要問你們：大稻埕碼頭最有名的出口商品是什麼呢？A. 糖果B. 茶葉C. 玩具，我覺得是A"
         # res_data = {
         #     "content": "你的回答正確喔！...",
