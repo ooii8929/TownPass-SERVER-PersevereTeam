@@ -1,0 +1,12 @@
+langchain
+langchain_openai
+langchain-community
+pypdf
+PyPDF2
+chromadb
+langchainhub
+rich
+jq
+toml==0.10.2
+langchain-openai
+langchain_chroma

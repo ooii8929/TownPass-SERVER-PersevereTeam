@@ -55,12 +55,32 @@ prompt = ChatPromptTemplate.from_template(template=template)
 
 def format_docs(docs):
     return "\n------------------\n".join(doc.page_content for doc in docs)
+# 創建一個函數來處理輸入
+def handle_inputs(inputs):
+    # 使用檢索器獲取上下文
+    docs = retriever.get_relevant_documents(inputs["question"])
+    formatted_context = format_docs(docs)
+    
+    # 返回一個包含所有需要的字段的字典
+    return {
+        "context": formatted_context,
+        "question": inputs["question"],
+        "audience": inputs["audience"],
+        "language": inputs["language"]
+    }
 
-chain = ({"context": retriever | RunnableLambda(format_docs),
-          "question": RunnablePassthrough()}
+chain = (    {
+        "context": lambda x: format_docs(retriever.get_relevant_documents(x["question"])),
+        "question": lambda x: x["question"],
+        "audience": lambda x: x["audience"],
+        "language": lambda x: x["language"]
+    }
          | prompt
          | model
          | StrOutputParser())
-
-result = chain.invoke(question)
+result = chain.invoke({
+    "question": "有哪些畫是關於愛情的",
+    "audience": "kid",
+    "language": "Korean"
+})
 pprint(result)

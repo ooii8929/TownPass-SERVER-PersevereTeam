@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_chroma import Chroma
+
 from langchain.document_loaders import JSONLoader
 
 
@@ -24,7 +25,7 @@ load_dotenv()
 
 """### JSON Loader """
 
-file_path = "./crawler/all_artwork_info.json"
+file_path = "../crawler/artwork_info.json"
 loader = JSONLoader(file_path=file_path, jq_schema='.', text_content=False)
 docs = loader.load()
 print(f"docs: {len(docs)}")
