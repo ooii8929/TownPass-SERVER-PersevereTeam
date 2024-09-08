@@ -3,6 +3,7 @@ from ..db import db_connection
 import uuid
 import time
 import json
+import traceback 
 from ..models.bot_model import Bot
 from ..models.defined_enum import Language, Style, SectionStage, QestionType
 
@@ -54,7 +55,7 @@ def create_conversation(task_id):
       )
 
     if data['last_uid'] == 'init':
-      cursor.execute("INSERT INTO tasks (task_id, user_uid, interactions, status) VALUES (?, ?, ?, ?)", (task_id, user_uid, 1, 'A'))
+      cursor.execute("INSERT INTO tasks (task_id, user_uid, interactions, status, score) VALUES (?, ?, ?, ?, ?)", (task_id, user_uid, 1, 'A', 10))
       cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, ts) VALUES (?, ?, ?, ?, ?, ?)", (uid, task_id, user_uid, 'init', 'user', ts))
       # call model to get next conversation
       ai_res = my_bot.interact(SectionStage.BEGINNING, "")
@@ -65,7 +66,7 @@ def create_conversation(task_id):
       res_data = {
         "task_id": task_id,
         "user_uid": data['user_uid'],
-        "score": 0,
+        "score": 10,
         "conversation": {
           "content": ai_res['content'], # 任務簡介、景點簡介、問題回覆
           "question": ai_res['question'],	  # 選擇題題目
@@ -91,7 +92,12 @@ def create_conversation(task_id):
       # get option
       cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, reply, answer, option, ts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (uid, task_id, user_uid, 'user', 'user', data['reply'], data['answer'], "option", ts)) 
       # call model to get next conversation
-      ai_res = my_bot.interact(SectionStage.PROGRESS, f"這是提問: {last_conversation['question']}, 這是答案: {data['reply']}")
+      if(last_conversation['type'] == 'option'):
+        option_str= json.dumps(last_conversation['options'], separators=(',', ':'))
+        print("***********提供選擇題答案")
+        ai_res = my_bot.interact(SectionStage.PROGRESS, f"這是提問: {last_conversation['question']}, 這是選項: {option_str} 這是答案: {data['answer']}")
+      else:
+        ai_res = my_bot.interact(SectionStage.PROGRESS, f"這是提問: {last_conversation['question']}, 這是答案: {data['reply']}")
       # insert system conversation to db
       options = [] if ai_res['type'] == QestionType.OPEN else ai_res["options"]
       # insert system conversation to db 
@@ -115,6 +121,7 @@ def create_conversation(task_id):
     conn.close()
   except Exception as e:
     print("*******", e)
+    traceback.print_exc()
     res_data = {'error': True}
   finally:
       if conn:
