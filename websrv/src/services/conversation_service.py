@@ -11,6 +11,8 @@ def get_all_conversations(task_id):
   data = request.get_json()
   conn = db_connection()
   cursor = conn.cursor()
+  cursor.execute("SELECT * FROM tasks WHERE task_id=? AND user_uid=?", (task_id, data['user_uid'],))
+  task = cursor.fetchone()
   cursor.execute("SELECT * FROM conversations WHERE task_id=? AND user_uid=? ", (task_id, data['user_uid'],)) 
   rows = cursor.fetchall()
   column_names = [description[0] for description in cursor.description]
@@ -25,7 +27,7 @@ def get_all_conversations(task_id):
   res = {
   	"task_id": task_id,
   	"user_uid": data['user_uid'],
-  	"score": '20',
+  	"score": task['score'],
   	"conversations": result
   }
   return jsonify(res)
