@@ -1,5 +1,5 @@
 from .rag_handler import rag_handler
-from .defined_enum import Language, Style, SectionStage, type_dict
+from .defined_enum import Language, Style, SectionStage, type_dict, style_dict, language_dict
 from enum import Enum, auto
 
 
@@ -15,12 +15,18 @@ class Bot:
 
     def interact(self, sectionStage: SectionStage,inputText: str):
         # rag_handler(audience, language, location, character,stage, all_locations,visited_locations, userInput= "")
-        audience = "kid" #這邊之後要改成傳入age
+        audience = "幼稚園小朋友，不能用太艱深的詞彙"
+
+        if self.age >= 30: 
+            audience = "台灣歷史文化古蹟專家"
+         #這邊之後要改成傳入age
+        print("demo:",audience,style_dict[self.style],language_dict[self.language])
+
         res_data = rag_handler(
             audience=audience,
-            language=self.language,
+            language=language_dict[self.language],
             location=self.user_location,
-            character=self.style,
+            character=style_dict[self.style],
             stage=sectionStage,
             all_locations=self.all_locations,
             visited_locations=self.visited_locations,

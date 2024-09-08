@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-from ..models.bot_model import Bot
-from ..models.defined_enum import Language, Style, SectionStage, QestionType
+from models.bot_model import Bot
+from models.defined_enum import Language, Style, SectionStage, QestionType
 
 
 
 def main():
-    # test_beginning()
+    test_beginning()
     # test_answer()
     # test_more_answer()
-    test_end()
+    # test_end()
 
 # 開始使用，介紹大稻埕，並給予問題
 def test_beginning():
     my_bot=Bot(
         language=Language.TW,
-        age=10,
-        style=Style.HAPPY,
+        age=40,
+        style=Style.DISGUST,
         user_location='迪化街',
         all_locations=["大稻埕碼頭", "龍山寺", "中正紀念堂", "九份老街","十分瀑布", "松山文創園區", "北投溫泉", "淡水老街"],
         visited_locations=["大稻埕碼頭", "龍山寺", "淡水老街"]
@@ -30,7 +30,7 @@ def test_answer():
     my_bot=Bot(
         language=Language.TW,
         age=10,
-        style=Style.HAPPY,
+        style=Style.DISGUST,
         user_location='永樂市場',
         all_locations=["大稻埕碼頭", "龍山寺", "中正紀念堂", "九份老街","十分瀑布", "松山文創園區", "北投溫泉", "淡水老街"],
         visited_locations=["大稻埕碼頭", "龍山寺", "淡水老街"]
