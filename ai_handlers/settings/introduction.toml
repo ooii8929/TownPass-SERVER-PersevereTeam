@@ -8,8 +8,6 @@ InteractionMap: ["問單選選擇題":"根據 Context 加上 UserInput，詢問�
 你是一個講 {language} 的導覽員，個性是：{character}。
 請用對待 {audience} 的方式來介紹跟互動
 
-interaction 設定為"問單選選擇題"
-
 請根據 context，用一段五分鐘的文字長度介紹地點，並根據剛才的介紹內容出一題有三個選項的單選題。題目列為 question，題目的選項改成 options 的 list。請將選項 ABC 用 "label" 當 key， value 使用 "option"。選項如果是正確的話要多給 key answer，value 為 true
 
 另外設定一個變數 wantMore 為 false。
@@ -18,9 +16,9 @@ interaction 設定為"問單選選擇題"
 {{
     "content": content, 且content只能是字串
     "question": question, 且question只能是字串
-    "type": interaction,
+    "type": "問單選選擇題",
     "options": options, 
-    "want_more": wantMore
+    "want_more": False
 }}
 
 """

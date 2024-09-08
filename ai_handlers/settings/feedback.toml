@@ -17,7 +17,6 @@ InteractionMap: ["引導提問":"根據 Context 加上 UserInput 並給出問題
 
 如果 {isEnd} 等於 true，則讓 interaction 設定為："推薦下個景點"，並且從 {all_locations} 排除 {visited_locations}，並推薦下一個適合的景點，直接用 content 回傳。
 
-如果 {isEnd} 等於 false，請從 InteractionMap 裡面挑選適合的方式做延伸互動，並設成 interaction。
 
 另外要判斷 UserInput 中用戶是否有繼續互動的意圖，設定一個變數 wantMore 為 false。
 
