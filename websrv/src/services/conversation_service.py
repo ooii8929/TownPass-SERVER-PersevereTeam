@@ -75,13 +75,14 @@ def create_conversation(task_id):
           "question": ai_res['question'],	  # 選擇題題目
           "options": ai_res['options'],
           "type": type,	
-          "uid": uid,
+          "uid": system_uid,
           "ts": ts
         }
       }
     else:
       cursor.execute("SELECT * FROM conversations WHERE uid=?", (data['last_uid'],))
       last_conversation = cursor.fetchone()
+      print('last_conversation', last_conversation)
       tmpScore = 2;
       if(last_conversation['type'] == 'option'):
         lastOptions = json.loads(last_conversation['options'])
@@ -104,6 +105,7 @@ def create_conversation(task_id):
       # insert system conversation to db
       options = [] if ai_res['type'] == QestionType.OPEN else ai_res["options"]
       # insert system conversation to db 
+      print("***********", ai_res)
       type = ai_res["type"].name.lower()
       cursor.execute("INSERT INTO conversations (uid, task_id, user_uid, type, category, content, question, options, ts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (system_uid, task_id, user_uid, type, 'system', ai_res['content'], ai_res["question"], json.dumps(options, separators=(',', ':')), ts))  
       res_data = {
@@ -115,7 +117,7 @@ def create_conversation(task_id):
           "question": ai_res['question'],	  # 選擇題題目
           "options": options, # 選擇題選項
           "type": type,	
-          "uid": uid,
+          "uid": system_uid,
           "ts": ts
         }
       } 
