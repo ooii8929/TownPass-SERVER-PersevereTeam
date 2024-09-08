@@ -23,8 +23,8 @@ InteractionMap: ["引導提問":"根據 Context 加上 UserInput 並給出問題
 
 請依照以下json格式輸出，type 請寫死不要更改
 {{
-    "content": content,
-    "question": question,
+    "content": content, 且content只能是字串
+    "question": question, 且question只能是字串
     "type": "引導提問",
     "options": options, 
     "want_more": wantMore

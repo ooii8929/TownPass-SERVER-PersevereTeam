@@ -16,8 +16,8 @@ interaction 設定為"問單選選擇題"
 
 請依照以下json格式輸出
 {{
-    "content": content,
-    "question": question,
+    "content": content, 且content只能是字串
+    "question": question, 且question只能是字串
     "type": interaction,
     "options": options, 
     "want_more": wantMore
