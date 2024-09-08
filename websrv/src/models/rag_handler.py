@@ -11,7 +11,7 @@ from .defined_enum import Language, Style, SectionStage
 import toml
 
 def rag_handler(audience, language, location, character,stage, all_locations,visited_locations, userInput= ""):
-    print(audience, language, location, character,stage, all_locations,visited_locations, userInput)
+    print("rag_handler:",audience, language, location, character,stage, all_locations,visited_locations, userInput)
     isEnd = False
     # Load environment variables
     load_dotenv()
